@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NURA | Noble Harvest, Vitality & Gifting</title>
+    <title>NURA | Noble Harvest & Botanical Gold</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Plus+Jakarta+Sans:wght@200;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -15,96 +15,120 @@
             --glass-border: rgba(255, 255, 255, 0.08);
             --text-white: #F4F4F4;
             --text-muted: #8E9693;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-deep); color: var(--text-white); overflow-x: hidden; }
+        
+        /* Prestige Loader */
+/*        #prestige-loader { position: fixed; inset: 0; background: var(--bg-deep); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 1s; }
+        #prestige-loader.fade-out { opacity: 0; visibility: hidden; }
+        .loader-logo { font-family: 'Playfair Display'; font-size: 3rem; color: var(--gold); letter-spacing: 10px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; text-shadow: 0 0 20px var(--gold-glow); } }*/
+
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         h1, h2, h3, .logo { font-family: 'Playfair Display', serif; }
         .cinzel { font-family: 'Cinzel', serif; letter-spacing: 3px; }
 
-        /* --- Header --- */
+        /* Header */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             padding: 15px 6%; display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(15px); background: rgba(3, 8, 6, 0.9); border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); background: rgba(3, 8, 6, 0.8); border-bottom: 1px solid var(--glass-border);
         }
         .logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .logo-icon { color: var(--gold); font-size: 1.4rem; filter: drop-shadow(0 0 5px var(--gold-glow)); }
-        .logo-text { font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; }
+        .logo-icon { color: var(--gold); font-size: 1.4rem; filter: drop-shadow(0 0 8px var(--gold-glow)); }
+        .logo-text { font-size: 1.5rem; font-weight: 700; letter-spacing: 4px; }
         
         .search-wrapper { position: relative; width: 300px; }
-        .search-wrapper input { width: 100%; background: var(--glass); border: 1px solid var(--glass-border); padding: 8px 15px 8px 35px; border-radius: 50px; color: white; font-size: 0.8rem; transition: 0.3s; }
-        .search-wrapper input:focus { border-color: var(--gold); }
-        .search-wrapper i { position: absolute; left: 12px; top: 10px; color: var(--gold); }
+        .search-wrapper input { width: 100%; background: var(--glass); border: 1px solid var(--glass-border); padding: 10px 15px 10px 40px; border-radius: 50px; color: white; font-size: 0.8rem; transition: 0.3s; }
+        .search-wrapper i { position: absolute; left: 15px; top: 12px; color: var(--gold); }
+        .badge { position: absolute; top: -8px; right: -10px; background: var(--gold); font-size: 0.6rem; padding: 2px 6px; border-radius: 50%; color: black; font-weight: 800; }
 
-        .icon-btn { position: relative; cursor: pointer; font-size: 1.2rem; }
-        .badge { position: absolute; top: -8px; right: -10px; background: var(--gold); font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; color: black; font-weight: 800; }
-
-        /* --- Weekly Banner --- */
-        .weekly-banner {
-            margin: 100px 6% 30px; padding: 40px;
-            background: linear-gradient(90deg, #0A1A14 0%, #030806 100%);
-            border: 1px solid var(--gold); position: relative; overflow: hidden;
-            display: flex; justify-content: space-between; align-items: center;
+        /* --- ADVANCED HOVER & ZOOM CSS --- */
+        .img-container { 
+            position: relative; 
+            width: 100%; 
+            height: 220px; 
+            overflow: hidden; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
+            cursor: zoom-in; 
+            background: rgba(0,0,0,0.1);
         }
-        .weekly-tag { background: var(--gold); color: black; padding: 4px 12px; font-size: 0.6rem; font-weight: 800; position: absolute; top: 0; left: 0; }
-        .weekly-info h2 { font-size: 2rem; margin-bottom: 10px; }
+        .img-container img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+            transform-origin: center center;
+        }
+
+        /* The 3D Interaction Fix: Zoom + Rotate on Card Hover */
+        .product-card:hover .img-container img {
+            transform: scale(1.1) rotate(2deg);
+        }
 
         /* --- Vitality Tooltip --- */
         .vitality-tooltip {
-            position: absolute; top: 10%; left: 5%; right: 5%;
-            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px;
-            border-radius: 12px; z-index: 50; opacity: 0; visibility: hidden;
-            transform: translateY(10px); transition: var(--transition); pointer-events: none;
+            position: absolute; top: -50px; left: 15px; right: 15px;
+            background: rgba(3, 8, 6, 0.9); backdrop-filter: blur(10px);
+            border: 1px solid var(--gold); padding: 15px; border-radius: 8px;
+            z-index: 100; opacity: 0; visibility: hidden;
+            transform: translateY(-10px); transition: var(--transition);
+            pointer-events: none;
         }
         .product-card:hover .vitality-tooltip { opacity: 1; visibility: visible; transform: translateY(0); }
-        .v-label { font-family: 'Cinzel'; font-size: 0.6rem; color: var(--gold); border-bottom: 1px solid rgba(197,160,89,0.2); padding-bottom: 5px; margin-bottom: 8px; display: block; }
+        .v-label { font-family: 'Cinzel'; font-size: 0.6rem; color: var(--gold); border-bottom: 1px solid rgba(197,160,89,0.2); padding-bottom: 5px; margin-bottom: 8px; display: block; text-align: left; }
         .v-stat { font-size: 0.75rem; display: flex; justify-content: space-between; margin-bottom: 4px; }
 
-        /* --- Grid Layouts --- */
-        .section-header { text-align: center; padding: 60px 0 30px; }
-        .section-header .sub { color: var(--gold); letter-spacing: 5px; font-size: 0.7rem; text-transform: uppercase; }
+        /* Banner & Slider */
+        .weekly-banner { margin: 100px 6% 30px; padding: 40px; background: radial-gradient(circle at center, #0A1A14 0%, #030806 100%); border: 1px solid var(--gold); position: relative; overflow: hidden; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .weekly-tag { background: var(--gold); color: black; padding: 5px 15px; font-size: 0.6rem; font-weight: 800; position: absolute; top: 0; left: 0; letter-spacing: 2px; }
         
-        .combo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 6% 40px; }
-        .combo-card { background: var(--glass); border: 1px solid var(--glass-border); display: flex; transition: var(--transition); overflow: hidden; }
-        .combo-card:hover { border-color: var(--gold); }
-        .combo-img { width: 40%; height: 250px; object-fit: cover; }
-        .combo-body { padding: 30px; width: 60%; }
+.slider-section{padding:40px 0 20px;overflow:hidden;position:relative}.slider-track{display:flex;width:fit-content;gap:25px;animation:slideInfinite 50s linear infinite;padding:20px 10px}.slider-track:hover{animation-play-state:paused}@keyframes slideInfinite{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}.slide-card{width:250px;height:450px;flex-shrink:0;display:flex}.slide-card .product-card{width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between}.slide-card .img-container{height:200px;flex-shrink:0}.slide-card img{width:100%;height:100%;object-fit:cover}
 
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 0 6% 80px; }
+ 
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 40px 6% 100px; }
         .product-card { background: var(--glass); border: 1px solid var(--glass-border); padding: 25px; text-align: center; transition: var(--transition); position: relative; }
-        .product-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-        .product-card img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 20px; }
+        .product-card:hover { border-color: var(--gold); background: rgba(255,255,255,0.05); }
 
-        /* Weight Toggle Buttons */
         .w-box { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; }
-        .w-btn { background: transparent; border: 1px solid var(--glass-border); color: var(--text-muted); padding: 5px 12px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; z-index: 60; }
-        .w-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(197,160,89,0.1); }
+        .w-btn { background: transparent; border: 1px solid var(--glass-border); color: var(--text-muted); padding: 6px 12px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; z-index: 110; position: relative; }
+        .w-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(197, 160, 89, 0.1); }
 
-        .price-text { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--gold); display: block; margin-bottom: 15px; }
-        .buy-btn { background: var(--gold); color: black; border: none; padding: 12px; font-family: 'Cinzel', serif; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; }
+        .price-text { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold); display: block; margin-bottom: 20px; }
+        .buy-btn { background: var(--gold); color: black; border: none; padding: 14px; font-family: 'Cinzel', serif; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s; z-index: 110; position: relative; }
         .buy-btn:hover { background: #e5c07b; }
 
-        /* --- Sidebar & Modal --- */
-        #cart-panel { position: fixed; top: 0; right: -100%; width: 400px; height: 100%; background: #050C0A; z-index: 2000; transition: var(--transition); border-left: 1px solid var(--gold); padding: 40px; display: flex; flex-direction: column; }
+        /* Sidebar & Footer */
+        #cart-panel { position: fixed; top: 0; right: -100%; width: 450px; height: 100%; background: #050C0A; z-index: 2000; transition: var(--transition); border-left: 1px solid var(--gold); padding: 40px; display: flex; flex-direction: column; }
         #cart-panel.open { right: 0; }
-        .cart-item { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--glass-border); }
-        
-        .gifting-row { background: rgba(197, 160, 89, 0.05); border: 1px dashed var(--gold); padding: 15px; margin-bottom: 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
+        .gifting-row { background: rgba(197, 160, 89, 0.05); border: 1px dashed var(--gold); padding: 15px; margin-bottom: 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 10px; }
 
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-box { background: #030806; border: 1px solid var(--gold); padding: 40px; width: 420px; text-align: center; position: relative; }
-        .close-modal { position: absolute; top: 15px; right: 15px; cursor: pointer; color: var(--text-muted); }
-        .lux-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 12px 0; color: white; margin-bottom: 20px; }
+        footer { background: #020504; border-top: 1px solid var(--glass-border); padding: 60px 6% 30px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-logo { font-size: 2rem; color: var(--gold); margin-bottom: 20px; display: block; }
 
-        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 5000; }
+        /* Modal */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 20px; }
+        .modal-box { background: #030806; border: 1px solid var(--gold); padding: 30px; width: 100%; max-width: 450px; text-align: center; position: relative; }
+        .lux-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px 0; color: white; margin-bottom: 20px; }
 
-        @media (max-width: 768px) { .combo-grid { grid-template-columns: 1fr; } #cart-panel { width: 100%; } .search-wrapper { display: none; } }
+        #purchase-toast { position: fixed; bottom: 20px; left: -400px; background: rgba(10, 26, 20, 0.9); border: 1px solid var(--gold); padding: 12px 20px; border-radius: 4px; display: flex; align-items: center; gap: 15px; transition: 0.8s; z-index: 10000; backdrop-filter: blur(10px); }
+        #purchase-toast.show { left: 20px; }
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        @media (max-width: 768px) { .search-wrapper { display: none; } #cart-panel { width: 100%; } .weekly-banner { margin-top: 80px; } }
     </style>
 </head>
 <body>
+
+    <div id="prestige-loader"><div class="loader-logo">NURA</div></div>
+    <canvas id="bg-canvas"></canvas>
 
     <header>
         <div class="logo-area" onclick="location.reload()">
@@ -113,7 +137,7 @@
         </div>
         <div class="search-wrapper">
             <i class="fa fa-search"></i>
-            <input type="text" id="mainSearch" placeholder="Search the collection..." onkeyup="filterShop()">
+            <input type="text" id="mainSearch" placeholder="Search the harvest..." onkeyup="filterShop()">
         </div>
         <div class="icon-btn" onclick="toggleCart()">
             <i class="fa-solid fa-bag-shopping"></i>
@@ -121,68 +145,64 @@
         </div>
     </header>
 
-    <!-- WhatsApp -->
-    <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <div id="purchase-toast">
+        <i class="fa fa-circle-check" style="color: var(--gold)"></i>
+        <div>
+            <div style="font-size: 0.75rem; font-weight: 600;" id="toast-text">Someone just bought</div>
+            <div style="font-size: 0.65rem; color: var(--gold); font-family: 'Cinzel';" id="toast-item">Mamra Almonds</div>
+        </div>
+    </div>
 
-    <!-- Weekly Offer -->
+    <a href="https://wa.me/919876543210" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <!-- Weekly Banner -->
     <div class="weekly-banner">
-        <div class="weekly-tag">WEEKLY EXCLUSIVE</div>
+        <div class="weekly-tag">LIMITED OFFER</div>
         <div class="weekly-info">
-            <h2>Iranian Royal Pistachios</h2>
-            <p style="color:var(--text-muted); font-size: 0.8rem; margin-bottom: 10px;">Limited harvest. Perfectly salted and roasted.</p>
-            <span style="color:var(--gold); font-family:'Cinzel';">NOW ₹1,450 </span> <small style="text-decoration: line-through; opacity: 0.5;">₹1,850</small>
+            <h2 class="cinzel">Iranian Royal Pistachios</h2>
+            <p style="color:var(--text-muted); font-size: 0.8rem;">Sourced from the heart of Kerman. Salted & Roasted.</p>
+            <div style="margin-top: 10px;">
+                <span style="color:var(--gold); font-family:'Cinzel'; font-size: 1.2rem;">₹1,450 </span> <small style="text-decoration: line-through; opacity: 0.4;">₹1,850</small>
+            </div>
         </div>
         <button class="buy-btn" style="width: auto; padding: 10px 30px;" onclick="addSpecial('Weekly Royal Pistachios', 1450)">Claim Offer</button>
     </div>
 
-    <!-- Combos -->
-    <div class="section-header">
-        <span class="sub">Curated Bundles</span>
-        <h2 class="cinzel" style="font-size: 1.5rem; margin-top: 10px;">The Combo Registry</h2>
-    </div>
-
-    <div class="combo-grid">
-        <div class="combo-card">
-            <img src="https://img.freepik.com/premium-photo/badam-almond-plate-nuts-variety-almonds-bowl-hd-8k-wallpaper-stock-photographic-image_915071-77036.jpg" class="combo-img">
-            <div class="combo-body">
-                <h3 class="cinzel" style="font-size: 1rem; color: var(--gold);">Immunity Pack</h3>
-                <p style="font-size: 0.7rem; margin: 10px 0; color: var(--text-muted);">Almonds, Walnuts & Raw Sidr Honey.</p>
-                <div style="font-weight: 700; margin-bottom: 15px;">₹2,499</div>
-                <button class="buy-btn" onclick="addSpecial('Immunity Pack Combo', 2499)">Add Combo</button>
-            </div>
+    <!-- Top Selling Slider -->
+    <div class="slider-section">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <span class="cinzel" style="color:var(--gold); letter-spacing: 5px; font-size: 0.7rem;">THE MOST COVETED</span>
+            <h2 style="font-size: 1.8rem; margin-top: 10px;">Top Selling Collection</h2>
         </div>
-        <div class="combo-card">
-            <img src="https://img.freepik.com/premium-photo/top-down-view-dryfruits_1156689-1814.jpg" class="combo-img">
-            <div class="combo-body">
-                <h3 class="cinzel" style="font-size: 1rem; color: var(--gold);">Gourmet Nut Platter</h3>
-                <p style="font-size: 0.7rem; margin: 10px 0; color: var(--text-muted);">Macadamias, Cashews, and Pine Nuts.</p>
-                <div style="font-weight: 700; margin-bottom: 15px;">₹4,200</div>
-                <button class="buy-btn" onclick="addSpecial('Gourmet Nut Platter', 4200)">Add Combo</button>
-            </div>
-        </div>
+        <div class="slider-track" id="top-track"></div>
     </div>
 
-    <!-- Shop -->
-    <div class="section-header">
-        <span class="sub">Individual Selection</span>
-        <h2 class="cinzel" style="font-size: 1.5rem; margin-top: 10px;">Noble Harvest & Vitality</h2>
+    <div style="text-align: center; margin-top: 30px;">
+        <span class="cinzel" style="color:var(--gold); letter-spacing: 5px; font-size: 0.7rem;">FULL CATALOGUE</span>
+        <h2 style="font-size: 1.8rem; margin-top: 10px;">Individual Selections</h2>
     </div>
-
     <div class="shop-grid" id="main-grid"></div>
 
-    <!-- Sidebar Cart -->
+    <footer>
+        <div class="footer-grid">
+            <div><span class="logo footer-logo cinzel">NURA</span><p style="color:var(--text-muted); font-size: 0.85rem; line-height: 1.8;">The absolute standard in dry fruits. Sourced globally, delivered locally.</p></div>
+            <div><span class="footer-head cinzel">Explore</span><p style="color:var(--text-muted); font-size: 0.8rem;">Our Heritage, Health Metrics, Gifting Atelier.</p></div>
+            <div><span class="footer-head cinzel">Service</span><p style="color:var(--text-muted); font-size: 0.8rem;">Shipping Registry, Contact Us, Privacy.</p></div>
+            <div><span class="footer-head cinzel">HQ</span><p style="color:var(--text-muted); font-size: 0.8rem;">Mumbai, India<br>concierge@nura.com</p></div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
     <div id="cart-panel">
         <div style="display:flex; justify-content: space-between; align-items: center;">
-            <h2 class="cinzel">Your Registry</h2>
+            <h2 class="cinzel">Registry</h2>
             <i class="fa fa-times" style="cursor:pointer" onclick="toggleCart()"></i>
         </div>
         <div id="cart-list" style="flex-grow:1; margin-top: 30px; overflow-y:auto;"></div>
-        <div style="border-top: 1px solid var(--glass-border); padding-top: 20px;">
+        <div style="border-top: 1px solid var(--glass-border); padding-top: 25px;">
             <div class="gifting-row">
                 <input type="checkbox" id="giftOption" onchange="updateUI()">
-                <label for="giftOption">Add Premium Gifting Box (+ ₹250)</label>
+                <label for="giftOption" style="cursor:pointer">Add Gifting Box (+ ₹250)</label>
             </div>
             <div style="display:flex; justify-content: space-between; margin-bottom: 20px;">
                 <span class="cinzel">Total</span>
@@ -192,111 +212,263 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Payment Modal -->
     <div class="modal" id="pay-modal">
         <div class="modal-box">
-            <i class="fa fa-times close-modal" onclick="closeModal()"></i>
+            <i class="fa fa-times close-modal" style="position:absolute; right:20px; top:20px; cursor:pointer;" onclick="closeModal()"></i>
             <div id="pay-step-1">
-                <h3 class="cinzel" style="margin-bottom: 20px;">Delivery Details</h3>
+                <h3 class="cinzel" style="margin-bottom: 25px;">Shipping Registry</h3>
                 <input type="text" id="cust-name" class="lux-input" placeholder="FULL NAME">
                 <textarea id="cust-addr" class="lux-input" placeholder="ADDRESS" rows="3"></textarea>
-                <button class="buy-btn" onclick="generateUPI()">Confirm Details</button>
+                <button class="buy-btn" onclick="generateUPI()">Generate Payment QR</button>
             </div>
-            <div id="pay-step-2" style="display:none;">
-                <h3 class="cinzel" style="margin-bottom: 15px;">Secure Payment</h3>
-                <div style="background:white; padding:10px; display:inline-block; margin-bottom: 15px;"><img id="qr-code" src="" style="width: 180px;"></div>
-                <h2 id="final-amt" style="color:var(--gold); margin-bottom: 15px;"></h2>
+            <!-- <div id="pay-step-2" style="display:none;">
+                <h3 class="cinzel" style="margin-bottom: 20px;">Scan to Pay</h3>
+                <div style="background:white; padding:15px; display:inline-block; margin-bottom: 15px;"><img id="qr-code" src="" style="width: 180px;"></div>
+                <h2 id="final-amt" style="color:var(--gold); margin-bottom: 20px;"></h2>
                 <button class="buy-btn" onclick="location.reload()">I Have Paid</button>
+            </div> -->
+            <div id="pay-step-2" style="display:none;">
+                <h3 class="cinzel" style="margin-bottom: 20px;">Scan to Pay</h3>
+                <div style="background:white; padding:15px; display:inline-block; margin-bottom: 15px;">
+                    <img id="qr-code" src="" style="width: 180px;">
+                </div>
+                <h2 id="final-amt" style="color:var(--gold); margin-bottom: 20px;"></h2>
+                <!-- Updated Button -->
+                <button class="buy-btn" onclick="processPayment()">I Have Paid & Send Invoice</button>
+            </div>
+
+            <!-- Add this new step for the Invoice View -->
+            <div id="pay-step-3" style="display:none;">
+                <i class="fa-solid fa-circle-check" style="color: #25D366; font-size: 3rem; margin-bottom: 15px;"></i>
+                <h3 class="cinzel">Payment Received</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 10px 0 20px;">Generating your noble invoice...</p>
+                <div id="invoice-preview" style="text-align: left; background: rgba(255,255,255,0.05); padding: 15px; font-size: 0.75rem; border: 1px solid var(--glass-border); margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
+                    <!-- JS will populate this -->
+                </div>
+                <p style="font-size: 0.7rem; margin-bottom: 15px;">Redirecting to WhatsApp for confirmation...</p>
             </div>
         </div>
     </div>
 
     <script>
-        const inventory = [
-            { id: 1, name: "Mamra Almonds", p500: 1250, p1k: 2400, img: "https://img.freepik.com/premium-photo/badam-almond-plate-nuts-variety-almonds-bowl-hd-8k-wallpaper-stock-photographic-image_915071-77036.jpg", v: {p: "21g", b: "Brain & Heart Health", f: "Morning Snack"} },
-            { id: 2, name: "Chilean Walnuts", p500: 950, p1k: 1800, img: "https://tse3.explicit.bing.net/th/id/OIP.iFvnYKjN1qBJhCj7Yr8hUQHaFC?rs=1&pid=ImgDetMain&o=7&rm=3", v: {p: "15g", b: "Memory & Cognitive Power", f: "Breakfast Mix"} },
-            { id: 3, name: "Cashews Jumbo", p500: 1100, p1k: 2150, img: "https://keralaspiceshop.com/wp-content/uploads/2023/11/Cashew-w210.jpg", v: {p: "18g", b: "Bone Density & Energy", f: "Afternoon Snack"} },
-            { id: 4, name: "Raisin Grapes", p500: 600, p1k: 1100, img: "https://tse1.mm.bing.net/th/id/OIP.Cx9cHRV-jQtsYVNUXkvfCAHaE7?rs=1&pid=ImgDetMain&o=7&rm=3", v: {p: "3g", b: "Iron & Natural Digestion", f: "Post Workout"} },
-            { id: 5, name: "Medjool Dates", p500: 850, p1k: 1600, img: "https://www.thespruceeats.com/thmb/3q2ZxBjGHPSkaLO6PBDKY8Wcq-E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1073737234-0d753b49bf0945cc896ee7d962cebee3.jpg", v: {p: "2g", b: "Instant Muscle Recovery", f: "Pre-Gym"} },
-            { id: 6, name: "Sidr Honey", p500: 1600, p1k: 3100, img: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400", v: {p: "0g", b: "High-Grade Immunity", f: "Warm Water / Tea"} }
-        ];
+const products=[{id:1,type:"nut",name:"California Almonds",p250:230,p500:460,p1k:920,img:"https://img.freepik.com/premium-photo/badam-almond-plate-nuts-variety-almonds-bowl-hd-8k-wallpaper-stock-photographic-image_915071-77036.jpg",v:{p:"21g",b:"Heart & Brain Health",f:"Morning Snack"}},{id:2,type:"nut",name:"Mamra Almonds",p250:800,p500:1600,p1k:3200,img:"https://images.slurrp.com/prodarticles/5n4x60rkrp7.webp",v:{p:"22g",b:"Premium Energy Boost",f:"Early Morning"}},{id:3,type:"nut",name:"Chilli Walnuts without shell",p250:400,p500:800,p1k:1600,img:"https://tse3.explicit.bing.net/th/id/OIP.iFvnYKjN1qBJhCj7Yr8hUQHaFC",v:{p:"15g",b:"Cognitive Power",f:"Breakfast Mix"}},{id:4,type:"nut",name:"Pistachios Roasted & Salted",p250:275,p500:550,p1k:1100,img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0oBOzzarwILjKnn6UcH_JWrAIx2tR49clcQ",v:{p:"20g",b:"Muscle Strength",f:"Evening Snack"}},{id:5,type:"nut",name:"Pista Without Shell",p250:575,p500:1150,p1k:2300,img:"https://healthykingdom.in/wp-content/uploads/2024/09/Pistachio-Pista-without-shell.jpg",v:{p:"21g",b:"High Protein Fuel",f:"Office Snack"}},{id:6,type:"nut",name:"Cashews (Big)",p250:300,p500:600,p1k:1200,img:"https://keralaspiceshop.com/wp-content/uploads/2023/11/Cashew-w210.jpg",v:{p:"18g",b:"Bone Density",f:"Afternoon Snack"}},{id:7,type:"nut",name:"Cashews (Small)",p250:220,p500:440,p1k:880,img:"https://keralaspiceshop.com/wp-content/uploads/2023/11/Cashew-w210.jpg",v:{p:"17g",b:"Daily Energy",f:"Lunch Side"}},{id:8,type:"nut",name:"Cashews 2 Half",p250:220,p500:440,p1k:880,img:"https://5.imimg.com/data5/SELLER/Default/2023/4/297099400/AJ/PI/YO/44773481/white-split-cashew-nut-1000x1000.jpg",v:{p:"16g",b:"Quick Nutrition",f:"Cooking Use"}},{id:9,type:"nut",name:"Roasted Pepper Cashews",p250:220,p500:440,p1k:880,img:"https://5.imimg.com/data5/SELLER/Default/2022/12/PG/GV/KG/181189314/black-pepper-cashew-nuts-1000x1000.jpg",v:{p:"18g",b:"Spicy Energy Boost",f:"Evening Snack"}},{id:10,type:"nut",name:"Roasted Chilli Cashews",p500:1100,p1k:2150,img:"https://5.imimg.com/data5/SELLER/Default/2021/3/MS/JL/UE/9791057/roasted-chilli-cashew-nut-500x500.jpg",v:{p:"18g",b:"Metabolism Boost",f:"Tea Time"}},{id:13,type:"dryfruit",name:"Dried Dates Khajur",p250:75,p500:150,p1k:300,img:"https://www.dryfruitshome.com/wp-content/uploads/2020/07/dry-dates-khajur.jpg",v:{p:"2g",b:"Instant Energy",f:"Any Time"}},{id:14,type:"dryfruit",name:"Afghan Figs",p250:375,p500:750,p1k:1500,img:"https://m.media-amazon.com/images/I/41tjpyGD4FS.jpg",v:{p:"3g",b:"Fiber & Digestion",f:"Night Ritual"}},{id:15,type:"dryfruit",name:"Black Raisin Seed Grapes",p250:150,p500:300,p1k:600,img:"https://tse1.mm.bing.net/th/id/OIP.Cx9cHRV-jQtsYVNUXkvfCAHaE7",v:{p:"1g",b:"Natural Sweet Energy",f:"Breakfast Topping"}},{id:16,type:"dryfruit",name:"Cashew 4 Pieces",p500:1600,p1k:3000,img:"https://5.imimg.com/data5/SELLER/Default/2025/3/499529533/UJ/IC/CY/63635127/4-piece-cashew-nuts-1-500x500.jpg",v:{p:"18g",b:"Premium Snack",f:"Occasional"}},{id:17,type:"dryfruit",name:"Walnut with Shell",p500:300,p1k:600,img:"https://tse2.mm.bing.net/th/id/OIP.YcFEjAaRMEFq6Km645E0gQHaE7",v:{p:"15g",b:"Brain Health",f:"Daily Use"}},{id:18,type:"dryfruit",name:"Kashmir Walnut without Shell",p500:300,p1k:600,img:"https://www.greendna.in/cdn/shop/files/walnutwh4_500x.webp?v=1747152276",v:{p:"15g",b:"Omega Rich",f:"Breakfast"}}];
+
 
         let cart = [];
         let stateW = {};
-        inventory.forEach(i => stateW[i.id] = '500g');
+        products.forEach(p => stateW[p.id] = '500g');
+
+        window.addEventListener('load', () => setTimeout(() => document.getElementById('prestige-loader').classList.add('fade-out'), 2000));
 
         function drawShop(f = "") {
             const grid = document.getElementById('main-grid');
+            const track = document.getElementById('top-track');
             grid.innerHTML = "";
-            const items = inventory.filter(i => i.name.toLowerCase().includes(f.toLowerCase()));
+            const items = products.filter(i => i.name.toLowerCase().includes(f.toLowerCase()));
+            items.forEach(item => grid.appendChild(createCard(item)));
 
-            items.forEach(item => {
-                const w = stateW[item.id];
-                const price = w === '500g' ? item.p500 : item.p1k;
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-                    <div class="vitality-tooltip">
-                        <span class="v-label">VITALITY METRICS</span>
-                        <div class="v-stat"><span>Protein</span><strong>${item.v.p}</strong></div>
-                        <div style="font-family:'Playfair Display'; font-style:italic; font-size:0.8rem; margin:8px 0;">"${item.v.b}"</div>
-                        <div style="font-size:0.6rem; color:var(--gold)">BEST: ${item.v.f.toUpperCase()}</div>
-                    </div>
-                    <img src="${item.img}">
-                    <h3 style="font-size:1rem; margin-bottom:12px;">${item.name}</h3>
-                    <div class="w-box">
-                        <button class="w-btn ${w === '500g' ? 'active' : ''}" onclick="changeW(${item.id}, '500g')">500G</button>
-                        <button class="w-btn ${w === '1kg' ? 'active' : ''}" onclick="changeW(${item.id}, '1kg')">1KG</button>
-                    </div>
-                    <span class="price-text">₹${price.toLocaleString('en-IN')}</span>
-                    <button class="buy-btn" onclick="addToBag(${item.id})">Add to Bag</button>
-                `;
-                grid.appendChild(card);
-            });
+            if(f === "") {
+                track.innerHTML = "";
+                [...products.slice(0, 6), ...products.slice(0, 6)].forEach(item => {
+                    const slide = document.createElement('div');
+                    slide.className = "slide-card";
+                    slide.appendChild(createCard(item));
+                    track.appendChild(slide);
+                });
+            }
+        }
+
+        // function createCard(item) {
+        //     const w = stateW[item.id];
+        //     const price = w === '500g' ? item.p500 : item.p1k;
+        //     const card = document.createElement('div');
+        //     card.className = 'product-card';
+        //     card.innerHTML = `
+        //         <div class="vitality-tooltip">
+        //             <span class="v-label">VITALITY SCORE</span>
+        //             <div class="v-stat"><span>Protein</span><strong>${item.v.p}</strong></div>
+        //             <div style="font-family:'Playfair Display'; font-style:italic; font-size:0.8rem; margin:8px 0; text-align:left;">"${item.v.b}"</div>
+        //         </div>
+        //         <div class="img-container" onmousemove="zoom(event)" onmouseleave="resetZoom(event)">
+        //             <img src="${item.img}">
+        //         </div>
+        //         <h3 style="font-size:1rem; margin-bottom:12px;">${item.name}</h3>
+        //         <div class="w-box">
+        //             <button class="w-btn ${w === '500g' ? 'active' : ''}" onclick="changeW(${item.id}, '500g')">500G</button>
+        //             <button class="w-btn ${w === '1kg' ? 'active' : ''}" onclick="changeW(${item.id}, '1kg')">1KG</button>
+        //         </div>
+        //         <span class="price-text">₹${price.toLocaleString('en-IN')}</span>
+        //         <button class="buy-btn" onclick="addToBag(${item.id})">Add to Bag</button>
+        //     `;
+        //     return card;
+        // }
+
+        function createCard(item) {
+    const w = stateW[item.id];
+    const price =
+        w === '250g' ? item.p250 :
+        w === '500g' ? item.p500 :
+        item.p1k;
+
+    const card = document.createElement('div');
+    card.className = 'product-card';
+
+    card.innerHTML = `
+        <div class="vitality-tooltip">
+            <span class="v-label">VITALITY SCORE</span>
+            <div class="v-stat"><span>Protein</span><strong>${item.v?.p || "-"}</strong></div>
+            <div style="font-family:'Playfair Display'; font-style:italic; font-size:0.8rem; margin:8px 0; text-align:left;">"${item.v?.b || ""}"</div>
+        </div>
+
+        <div class="img-container" onmousemove="zoom(event)" onmouseleave="resetZoom(event)">
+            <img src="${item.img}">
+        </div>
+
+        <h3 style="font-size:1rem; margin-bottom:12px;">${item.name}</h3>
+
+        <div class="w-box">
+            ${item.p250 ? `<button class="w-btn ${w==='250g'?'active':''}" onclick="changeW(${item.id},'250g')">250G</button>` : ``}
+            ${item.p500 ? `<button class="w-btn ${w==='500g'?'active':''}" onclick="changeW(${item.id},'500g')">500G</button>` : ``}
+            ${item.p1k  ? `<button class="w-btn ${w==='1kg'?'active':''}"  onclick="changeW(${item.id},'1kg')">1KG</button>` : ``}
+        </div>
+
+        <span class="price-text">₹${price.toLocaleString('en-IN')}</span>
+        <button class="buy-btn" onclick="addToBag(${item.id})">Add to Bag</button>
+    `;
+    return card;
+}
+
+        // Loupe Zoom Logic
+        function zoom(e) {
+            const img = e.currentTarget.querySelector('img');
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            // Scale(2.5) for inspection, plus subtle 2deg rotation maintained
+            img.style.transformOrigin = `${x}% ${y}%`;
+            img.style.transform = `scale(2.5) rotate(2deg)`;
+        }
+        function resetZoom(e) { 
+            const img = e.currentTarget.querySelector('img');
+            img.style.transformOrigin = 'center'; 
+            img.style.transform = `scale(1.1) rotate(2deg)`; // Base hover state
         }
 
         function changeW(id, val) { stateW[id] = val; drawShop(document.getElementById('mainSearch').value); }
         function filterShop() { drawShop(document.getElementById('mainSearch').value); }
 
+        // function addToBag(id) {
+        //     const i = products.find(x => x.id === id);
+        //     const w = stateW[id];
+        //     const p = w === '500g' ? i.p500 : i.p1k;
+        //     cart.push({ name: i.name, w, p });
+        //     updateUI();
+        //     toggleCart(true);
+        // }
+
         function addToBag(id) {
-            const i = inventory.find(x => x.id === id);
-            const w = stateW[id];
-            const p = w === '500g' ? i.p500 : i.p1k;
-            cart.push({ name: i.name, w, p });
-            updateUI();
-            toggleCart(true);
-        }
+    const i = products.find(x => x.id === id);
+    const w = stateW[id];
+
+    const p =
+        w === '250g' ? i.p250 :
+        w === '500g' ? i.p500 :
+        i.p1k;
+
+    cart.push({ name: i.name, w, p });
+    updateUI();
+    toggleCart(true);
+}
 
         function addSpecial(name, p) { cart.push({ name, w: 'Pack', p }); updateUI(); toggleCart(true); }
 
         function updateUI() {
             document.getElementById('cart-count').innerText = cart.length;
             const list = document.getElementById('cart-list');
-            list.innerHTML = cart.map((i, idx) => `<div class="cart-item"><div><div style="font-weight:600; font-size:0.9rem">${i.name}</div><div style="font-size:0.7rem; color:var(--gold)">${i.w}</div></div><div style="display:flex; align-items:center; gap:15px"><span style="font-weight:700">₹${i.p}</span><i class="fa fa-trash-can" style="cursor:pointer; opacity:0.3" onclick="cart.splice(${idx},1); updateUI();"></i></div></div>`).join('');
-            
+            list.innerHTML = cart.map((i, idx) => `<div class="cart-item"><div><div style="font-weight:600; font-size:0.9rem">${i.name}</div><div style="font-size:0.7rem; color:var(--gold)">${i.w}</div></div><div style="display:flex; align-items:center; gap:15px"><span style="font-weight:700">₹${i.p.toLocaleString('en-IN')}</span><i class="fa fa-trash-can" style="cursor:pointer; opacity:0.3" onclick="cart.splice(${idx},1); updateUI();"></i></div></div>`).join('');
             let total = cart.reduce((s, x) => s + x.p, 0);
             if(document.getElementById('giftOption').checked) total += 250;
             document.getElementById('cart-total').innerText = `₹${total.toLocaleString('en-IN')}`;
         }
 
-        function toggleCart(force = false) { 
-            const p = document.getElementById('cart-panel');
-            if(force) p.classList.add('open'); else p.classList.toggle('open');
-        }
-
-        function showCheckout() { if(cart.length > 0) document.getElementById('pay-modal').style.display = 'flex'; }
+        function toggleCart(force = false) { const p = document.getElementById('cart-panel'); if(force) p.classList.add('open'); else p.classList.toggle('open'); }
+        function showCheckout() { if(cart.length > 0) { document.getElementById('pay-modal').style.display='flex'; document.getElementById('pay-step-1').style.display='block'; document.getElementById('pay-step-2').style.display='none'; } }
         function closeModal() { document.getElementById('pay-modal').style.display = 'none'; }
 
         function generateUPI() {
-            if(!document.getElementById('cust-name').value) return alert("Enter your name");
-            const total = document.getElementById('cart-total').innerText.replace('₹','').replace(',','');
-            document.getElementById('final-amt').innerText = `Total: ₹${total}`;
+            if(!document.getElementById('cust-name').value) return alert("Details required");
+            const total = cart.reduce((s, x) => s + x.p, 0) + (document.getElementById('giftOption').checked ? 250 : 0);
+            document.getElementById('final-amt').innerText = `Total: ₹${total.toLocaleString('en-IN')}`;
             document.getElementById('qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=nura@upi&am=${total}&cu=INR`;
             document.getElementById('pay-step-1').style.display = 'none';
             document.getElementById('pay-step-2').style.display = 'block';
         }
 
-        drawShop();
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let pArray = [];
+        function initC() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; for(let i=0; i<50; i++) pArray.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2, d:Math.random()*1}); }
+        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="rgba(197,160,89,0.3)"; pArray.forEach(p => { ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); p.y-=p.d; if(p.y<0) p.y=canvas.height; }); requestAnimationFrame(animate); }
+
+        setInterval(() => {
+            const toast = document.getElementById('purchase-toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }, 12000);
+
+        initC(); animate(); drawShop();
+
+        function processPayment() {
+    const name = document.getElementById('cust-name').value;
+    const addr = document.getElementById('cust-addr').value;
+    const isGifting = document.getElementById('giftOption').checked;
+    
+    // 1. Calculate Totals
+    let subtotal = cart.reduce((s, x) => s + x.p, 0);
+    let total = subtotal + (isGifting ? 250 : 0);
+
+    // 2. Build Text Invoice for WhatsApp
+    let itemDetails = cart.map(i => `• ${i.name} (${i.w}) - ₹${i.p}`).join('%0A');
+    let giftingText = isGifting ? "%0A🎁 Gifting Box: ₹250" : "";
+    
+    let whatsappMessage = `*NURA | NEW ORDER INVOICE*%0A` +
+        `------------------------------%0A` +
+        `👤 *Customer:* ${name}%0A` +
+        `📍 *Address:* ${addr}%0A` +
+        `------------------------------%0A` +
+        `📦 *Items:*%0A${itemDetails}` +
+        `${giftingText}%0A` +
+        `------------------------------%0A` +
+        `💰 *TOTAL PAID:* ₹${total.toLocaleString('en-IN')}%0A` +
+        `✅ *Status:* Payment Confirmed%0A` +
+        `------------------------------%0A` +
+        `Please confirm receipt of this order.`;
+
+    // 3. Show Visual Invoice in Modal
+    document.getElementById('pay-step-2').style.display = 'none';
+    document.getElementById('pay-step-3').style.display = 'block';
+    
+    let previewHTML = `
+        <strong>Name:</strong> ${name}<br>
+        <strong>Address:</strong> ${addr}<br><hr style="border:0; border-top:1px solid #333; margin:10px 0">
+        ${cart.map(i => `<div>${i.name} (${i.w}) <span style="float:right">₹${i.p}</span></div>`).join('')}
+        ${isGifting ? `<div>Gifting Box <span style="float:right">₹250</span></div>` : ''}
+        <div style="color:var(--gold); font-weight:bold; margin-top:10px;">Total <span style="float:right">₹${total}</span></div>
+    `;
+    document.getElementById('invoice-preview').innerHTML = previewHTML;
+
+    // 4. Redirect to WhatsApp after 3 seconds
+    setTimeout(() => {
+        const phoneNumber = "919876543210"; // REPLACE WITH YOUR BUSINESS NUMBER
+        window.open(`https://wa.me/${phoneNumber}?text=${whatsappMessage}`, '_blank');
+        
+        // Optional: Reset cart and close modal after redirect
+        cart = [];
+        updateUI();
+        setTimeout(() => location.reload(), 2000); 
+    }, 3000);
+}
     </script>
 </body>
 </html>
